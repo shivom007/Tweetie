@@ -54,28 +54,33 @@ const Form = () => {
   const isRegister = pageType === "register";
   const [img, setImg] = useState(null)
   const register = async (values, onSubmitProps) => {
-    // this allows us to send form info with image
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-    }
-    formData.append('picture', values.picture.path)
-    // console.log(values.picture.path)
-    // console.log(img)
-    const savedUserResponse = await fetch(
-      `${process.env.REACT_APP_BACKEND}/auth/register`,
-      {
-        method: "POST",
-        body: formData,
+    try {
+      const formData = new FormData();
+      for (let value in values) {
+        formData.append(value, values[value]);
       }
-    );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
-
-    if (savedUser) {
-      setPageType("login");
+      formData.append('picture', values.picture.path);
+  
+      const savedUserResponse = await fetch(
+        `${process.env.REACT_APP_BACKEND}/auth/register`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const savedUser = await savedUserResponse.json();
+  
+      if (savedUser.error === "Username already exists") {
+        window.alert("Username already exists. Please choose a different username.");
+      } else {
+        onSubmitProps.resetForm();
+        setPageType("login");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
     }
   };
+  
 
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch(`${process.env.REACT_APP_BACKEND}/auth/login`, {
@@ -85,7 +90,12 @@ const Form = () => {
     });
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
-    if (loggedIn) {
+    
+    if (loggedIn.error === "User not found") {
+      window.alert("User not found. Please check your email.");
+    } else if (loggedIn.error === "Invalid credentials") {
+      window.alert("Invalid email or password. Please try again.");
+    } else if (loggedIn.user) {
       dispatch(
         setLogin({
           user: loggedIn.user,
@@ -95,6 +105,7 @@ const Form = () => {
       navigate("/home");
     }
   };
+  
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
