@@ -23,7 +23,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   },[isProfile])
   const getPosts = async () => {
     // console.log("inside post ")
-    const response = await fetch("http://localhost:3001/posts", {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND}/posts`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -37,7 +37,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     // console.log("inside post ")
     
     const response = await fetch(
-      `http://localhost:3001/posts/${userId}/posts`,
+      `${process.env.REACT_APP_BACKEND}/posts/${userId}/posts`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

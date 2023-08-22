@@ -49,7 +49,7 @@ const PostWidget = ({
     setEditedDescription(description);
   };
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND}/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ const PostWidget = ({
 
   const handleSaveEdit = async () => {
     // Call API to save the edited description
-    const response = await fetch(`http://localhost:3001/posts/${postId}/edit`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND}/posts/${postId}/edit`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ const PostWidget = ({
   };
 
   const postDel = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND}/posts/${postId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
