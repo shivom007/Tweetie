@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import { BrowserRouter,HashRouter as Router, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "pages/homePage";
 import LoginPage from "pages/loginPage";
 import ProfilePage from "pages/profilePage";
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div className="app">
-      <BrowserRouter>
+      <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
@@ -30,7 +30,7 @@ function App() {
             />
           </Routes>
         </ThemeProvider>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }
